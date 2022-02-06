@@ -30,7 +30,7 @@ public class Data extends JFrame implements ActionListener{
             .getScaledInstance(100, 50, Image.SCALE_SMOOTH), new Point(0,0), "watermelon");
 
 	
-	Point p = new Point(200,200);
+	Point p = new Point(100,100);
 	int mouseX, mouseY, getPointX, getPointY;
 	
 	JPanel mainScreen = new JPanel(true) { //메인패널 패널
@@ -63,6 +63,7 @@ public class Data extends JFrame implements ActionListener{
 		}
 	};
 	OnlineHopePanel onlineHopePanel = new OnlineHopePanel();
+	HopePanel hopePanel = new HopePanel();
 	JButton[] mainBtn = {new JButton("온라인 희망다이어리"), new JButton("희망다이어리"), new JButton("헤아림"),  new JButton("힐링프로그램"), 
 			         new JButton("자조모임"), new JButton("e희망교실"), new JButton("희망메신저"), new JButton("데이터")};
 	JButton[] onlineBtn = {new JButton("등록"), new JButton("삭제"), new JButton("저장"), 
@@ -85,12 +86,21 @@ public class Data extends JFrame implements ActionListener{
 	public void init() { //패널간 이동 setVisible로 조절할꺼임.
 		mainScreen.setVisible(true);
 		onlineHopePanel.setVisible(false);
+		hopePanel.setVisible(false);
 	}
 	
 	public void goOnlineHopePanel() {
 		mainScreen.setVisible(false);
 		onlineHopePanel.setVisible(true);
+		hopePanel.setVisible(false);
 	}
+	
+	public void goHopePanel() {
+		mainScreen.setVisible(false);
+		onlineHopePanel.setVisible(false);
+		hopePanel.setVisible(true);
+	}
+	
 	public void setBtns() {
 		for(int i = 0; i < mainBtn.length; i++) {
 		mainBtn[i].setBackground(C.col[i]);
@@ -104,7 +114,7 @@ public class Data extends JFrame implements ActionListener{
 		if(str == "온라인 희망다이어리") {
 			goOnlineHopePanel();
 		}else if(str == "희망다이어리") {
-			
+			goHopePanel();
 		}else if(str == "헤아림") {
 			
 		}else if(str == "자조모임") {
@@ -130,6 +140,8 @@ public class Data extends JFrame implements ActionListener{
 		mainScreen.setLayout(null);
 		onlineHopePanel.setBounds(200,0,1080,720);
 		onlineHopePanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		hopePanel.setBounds(200,0,1080,720);
+		hopePanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		leftBtnPanel.setBounds(0,0,200,720);
 		leftBtnPanel.setLayout(null);
 		leftBtnPanel.setBorder(BorderFactory.createLineBorder(new Color(255,200,140),4,true));
@@ -147,6 +159,7 @@ public class Data extends JFrame implements ActionListener{
 		add(leftBtnPanel);
 		add(mainScreen);
 		add(onlineHopePanel);
+		add(hopePanel);
 		mainScreen.setFocusable(true);
 	}
 	public void addKeyListener() {
@@ -187,6 +200,7 @@ public class Data extends JFrame implements ActionListener{
 			if(panel == emptyPanel) {
 				setCursor(new Cursor(HAND_CURSOR));
 			}
+			requestFocus();
 		}
 		public void mouseExited(MouseEvent e) {
 			setCursor(new Cursor(DEFAULT_CURSOR));
