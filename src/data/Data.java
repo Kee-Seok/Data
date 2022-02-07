@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -48,12 +50,14 @@ public class Data extends JFrame implements ActionListener{
 			this.repaint();
 		}
 	};
-	JPanel emptyPanel = new JPanel(true) { //빈 패널
+	static JPanel emptyPanel = new JPanel(true) { //빈 패널
 		public void paintComponent(Graphics g) {
 			g.setColor(new Color(94,130,130));
 			g.fillRect(0, 0, getWidth(), getHeight());
+			
+			Date.paintComponent(g,Date.getTime());
 			this.repaint();
-		}
+			}
 	};
 	JPanel leftBtnPanel = new JPanel(true) {
 		public void paintComponent(Graphics g) {
@@ -81,6 +85,14 @@ public class Data extends JFrame implements ActionListener{
 		setPanels();
 		addKeyListener();
 		init();
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				Date.getTime();
+				emptyPanel.repaint();
+			}
+		};
+		timer.schedule(task, 10, 1000);
 	}
 	
 	public void init() { //패널간 이동 setVisible로 조절할꺼임.
@@ -235,6 +247,12 @@ public class Data extends JFrame implements ActionListener{
 		}
 		public void mouseMoved(MouseEvent e) {
 			
+		}
+		public void mouseClicked(MouseEvent e) {
+			JPanel panel =(JPanel)e.getSource();
+			if(panel.equals(emptyPanel)) {
+				init();
+			}
 		}
 	}
 }
