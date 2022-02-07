@@ -36,7 +36,6 @@ public class Excel{
 	static Workbook workbook; 
  	public Excel() {
  		try {
-			save();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +73,7 @@ public class Excel{
 				for(int c = 0; c < HopePanel.model.getColumnCount(); c++)
 					ws[1].addCell(new Label(c,r+1,HopePanel.model.getValueAt(r, c).toString(),format));
 			}
-			int[] cellWidth = {18, 8, 18, 50};
+			int[] cellWidth = {22, 10, 22, 50};
 			for(int i = 0; i < 4; i++) {
 				ws[0].setColumnView(i, cellWidth[i]);
 				ws[1].setColumnView(i, cellWidth[i]);
@@ -116,28 +115,30 @@ public class Excel{
 		}
 	public static void getDataFromExcel() throws Exception {
 		try {
-			save();
+			//save();
 			workbook = Workbook.getWorkbook(file);
 			Sheet[] s = new Sheet[workbook.getSheets().length];
-			for(int i = 0; i < 7; i++) {
-				s[i] = wb.getSheet(i);
-			    System.out.println(s[i].getName());
+			for(int i = 0; i < workbook.getSheets().length; i++) {
+				s[i] = workbook.getSheet(i);
+			    System.out.println(workbook.getSheet(0).getName());
 			}
 			int j = 0;
 			//j인덱스의 시트 정보에서 셀이 있는지 없는지를 모두 판단 후 JTable에 정보를 넣는다.
 			for(j = 0; j < workbook.getSheets().length; j++) {
 			if(j == 0) {
 			for(int i = 1; i < s[j].getRows(); i++) {
-					OnlineHopePanel.model.addRow(new String[] {OnlineHopePanel.s[j].getCell(0,i).getContents(),OnlineHopePanel.s[j].getCell(1,i).getContents()
-							                   ,OnlineHopePanel.s[j].getCell(2,i).getContents(),OnlineHopePanel.s[j].getCell(3,i).getContents()
+					OnlineHopePanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+							                   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
 					});
 				}
 			}else if(j == 1) {
 			for(int i = 1; i < s[j].getRows(); i++) {
-					HopePanel.model.addRow(new String[] {HopePanel.s[j].getCell(0,i).getContents(),HopePanel.s[j].getCell(1,i).getContents()
-						                   	   ,HopePanel.s[j].getCell(2,i).getContents(),HopePanel.s[j].getCell(3,i).getContents()
+					HopePanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
 				});
 			}
+			}else {
+				return;
 			}
 			}
 			//j인덱스의 시트 정보에서 셀이 있는지 없는지를 모두 판단 후 JTable에 정보를 넣는다.
@@ -149,8 +150,4 @@ public class Excel{
 		}
 	}
 	
-	public static void main(String[] args) throws Exception {
-		new Excel();
-		getDataFromExcel();
-	}
 	}

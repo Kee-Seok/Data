@@ -93,6 +93,11 @@ public class Data extends JFrame implements ActionListener{
 			}
 		};
 		timer.schedule(task, 10, 1000);
+		try {
+			Excel.getDataFromExcel();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void init() { //패널간 이동 setVisible로 조절할꺼임.
@@ -125,8 +130,10 @@ public class Data extends JFrame implements ActionListener{
 		String str = e.getActionCommand();
 		if(str == "온라인 희망다이어리") {
 			goOnlineHopePanel();
+			OnlineHopePanel.setPerformanceLabel();
 		}else if(str == "희망다이어리") {
 			goHopePanel();
+			hopePanel.setPerformanceLabel();
 		}else if(str == "헤아림") {
 			
 		}else if(str == "자조모임") {

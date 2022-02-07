@@ -53,8 +53,8 @@ public class HopePanel extends JPanel implements ActionListener{
 			          new JLabel("참가인원 : ",SwingConstants.CENTER),
 			          new JLabel("날짜 : ",SwingConstants.CENTER),
 			          new JLabel("운영일지 : ",SwingConstants.CENTER)};
-	int sum;
-	JLabel performanceLabel = new JLabel("-",JLabel.CENTER);
+	static int sum;
+	static JLabel performanceLabel = new JLabel("-",JLabel.CENTER);
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
 	Color color = C.orange;
 	int sheetNum = 1;
@@ -72,7 +72,7 @@ public class HopePanel extends JPanel implements ActionListener{
 			              new JButton("저장"),
 			              new JButton("엑셀")};
 	JTextField dateTf = new JTextField(20);
-	int theNumberOfEntrance; //참가인원 라벨에서 명을 빼고 숫자텍스트만 변수에 넣을꺼임 (그래야 계산하기 수월함)
+	static int theNumberOfEntrance; //참가인원 라벨에서 명을 빼고 숫자텍스트만 변수에 넣을꺼임 (그래야 계산하기 수월함)
 	JTextArea ta = new JTextArea();
 	
 	
@@ -91,22 +91,17 @@ public class HopePanel extends JPanel implements ActionListener{
 		setPanel();
 		setSlider();
 		add(firstPanel);
-		try {
-			Excel.getDataFromExcel();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		setPerformanceLabel();
 	}
 
-	public void setPerformanceLabel() {
+	public static void setPerformanceLabel() {
 		performanceLabel.setText("<html>"+model.getRowCount()+"건"
                 + "<br>"
                 + getPerformanceNumber() +"명"
                 		+ "</html>");
 		sum = 0; //참가인원의 ~명에서 글자를 빼고 숫자만 산출 후 더할꺼임. 이 메소드를 실행 후에는 반드시 sum을 =0으로 초기화시켜줘야된다.
 	}
-	public int getPerformanceNumber() {  //참가인원의 ~명에서 글자를 빼고 숫자만 산출 후 더할꺼임. 이 메소드를 실행 후에는 반드시 sum을 =0으로 초기화시켜줘야된다.
+	public static int getPerformanceNumber() {  //참가인원의 ~명에서 글자를 빼고 숫자만 산출 후 더할꺼임. 이 메소드를 실행 후에는 반드시 sum을 =0으로 초기화시켜줘야된다.
 		for(int r = 0; r < model.getRowCount(); r++) {
 		    theNumberOfEntrance = Integer.parseInt(model.getValueAt(r,1).toString().replace("명", ""));
 			sum += theNumberOfEntrance;
@@ -277,9 +272,9 @@ public class HopePanel extends JPanel implements ActionListener{
 					ws[sheetNum].addCell(new Label(j,i+1,(String)model.getValueAt(i, j),format));
 				}
 			}
-			ws[sheetNum].setColumnView(0, 18);
-			ws[sheetNum].setColumnView(1, 8);
-			ws[sheetNum].setColumnView(2, 18);
+			ws[sheetNum].setColumnView(0, 22);
+			ws[sheetNum].setColumnView(1, 10);
+			ws[sheetNum].setColumnView(2, 22);
 			ws[sheetNum].setColumnView(3, 50);
 			wb.write();
 			wb.close();
