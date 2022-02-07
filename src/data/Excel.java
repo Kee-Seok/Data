@@ -19,7 +19,7 @@ import jxl.write.WritableWorkbook;
 
 public class Excel{
 
-	public static File file = new File("./Data.xls");
+	public static File file = new File("./temp/data.xls");
 	
 	static WritableWorkbook wb;
 	static String[] sheetNames = {"온라인 희망다이어리",
@@ -33,10 +33,10 @@ public class Excel{
 	static WritableSheet[] ws = new WritableSheet[sheetNum];
 	static WritableFont sheetFont;
 	static WritableCellFormat format;
-	
+	static Workbook workbook; 
  	public Excel() {
  		try {
-			setFormat();
+			save();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,6 +44,9 @@ public class Excel{
  	}
 
 	public static void setFormat() throws Exception {
+		if(!file.isFile()) {
+			file.createNewFile();
+		}
 		wb = Workbook.createWorkbook(file);
 		for(sheetNum = 0; sheetNum < sheetNames.length; sheetNum++) { //시트 설정해주고 생성시키기
 			ws[sheetNum] = wb.createSheet(sheetNames[sheetNum], sheetNum);
@@ -55,26 +58,21 @@ public class Excel{
 	}
 	public static void save() throws Exception {
 			setFormat();
-			if(OnlineHopePanel.model.getRowCount()==0) {
-				System.out.println("OnlineHopePanel.model.getRowCount : " + OnlineHopePanel.model.getRowCount());
-				System.out.println("HopePanel.model.getRowCount : " + HopePanel.model.getRowCount());
-			}else {
-				System.out.println("OnlineHopePanel.model.getRowCount : " + OnlineHopePanel.model.getRowCount());
-				System.out.println("HopePanel.model.getRowCount : " + HopePanel.model.getRowCount());
+			for(int c = 0; c < OnlineHopePanel.model.getColumnCount(); c++) {
+				ws[0].addCell(new Label(c,0,OnlineHopePanel.titles[c],format));
+			}
 			for(int r = 0; r < OnlineHopePanel.model.getRowCount(); r++) { 
 				for(int c = 0; c < OnlineHopePanel.model.getColumnCount(); c++) {
 					System.out.println(OnlineHopePanel.model.getValueAt(r, c));
 					ws[0].addCell(new Label(c,r+1,OnlineHopePanel.model.getValueAt(r, c).toString(),format));
 				}
-			}}
-			if(HopePanel.model.getRowCount()==0) {
-				System.out.println("OnlineHopePanel.model.getRowCount : " + OnlineHopePanel.model.getRowCount());
-				System.out.println("HopePanel.model.getRowCount : " + HopePanel.model.getRowCount());
-			}else {
+			}
+			for(int c = 0; c < HopePanel.model.getColumnCount(); c++) {
+				ws[1].addCell(new Label(c,0,HopePanel.titles[c],format));
+			}
 			for(int r = 0; r < HopePanel.model.getRowCount(); r++) { 
 				for(int c = 0; c < HopePanel.model.getColumnCount(); c++)
-					ws[1].addCell(new Label(c,r+1,OnlineHopePanel.model.getValueAt(r, c).toString(),format));
-			}
+					ws[1].addCell(new Label(c,r+1,HopePanel.model.getValueAt(r, c).toString(),format));
 			}
 			int[] cellWidth = {18, 8, 18, 50};
 			for(int i = 0; i < 4; i++) {
@@ -116,35 +114,34 @@ public class Excel{
 			}
 		workbook.close();
 		}
-	public static void getDataFromExcel() {
+	public static void getDataFromExcel() throws Exception {
 		try {
-			Workbook wb = Workbook.getWorkbook(file);
-			
+			save();
+			workbook = Workbook.getWorkbook(file);
+			Sheet[] s = new Sheet[workbook.getSheets().length];
 			for(int i = 0; i < 7; i++) {
-				OnlineHopePanel.s[i] = wb.getSheet(i);
+				s[i] = wb.getSheet(i);
+			    System.out.println(s[i].getName());
 			}
-			
+			int j = 0;
 			//j인덱스의 시트 정보에서 셀이 있는지 없는지를 모두 판단 후 JTable에 정보를 넣는다.
-			for(int j = 0; j < 7; j++) {
-			for(int i = 1; i < OnlineHopePanel.s[j].getRows(); i++) {
+			for(j = 0; j < workbook.getSheets().length; j++) {
+			if(j == 0) {
+			for(int i = 1; i < s[j].getRows(); i++) {
 					OnlineHopePanel.model.addRow(new String[] {OnlineHopePanel.s[j].getCell(0,i).getContents(),OnlineHopePanel.s[j].getCell(1,i).getContents()
 							                   ,OnlineHopePanel.s[j].getCell(2,i).getContents(),OnlineHopePanel.s[j].getCell(3,i).getContents()
 					});
 				}
-			}
-			for(int i = 0; i < 7; i++) {
-				HopePanel.s[i] = wb.getSheet(i);
-			}
-			
-			//j인덱스의 시트 정보에서 셀이 있는지 없는지를 모두 판단 후 JTable에 정보를 넣는다.
-			for(int j = 0; j < 7; j++) {
-			for(int i = 1; i < OnlineHopePanel.s[j].getRows(); i++) {
+			}else if(j == 1) {
+			for(int i = 1; i < s[j].getRows(); i++) {
 					HopePanel.model.addRow(new String[] {HopePanel.s[j].getCell(0,i).getContents(),HopePanel.s[j].getCell(1,i).getContents()
-							                   ,HopePanel.s[j].getCell(2,i).getContents(),HopePanel.s[j].getCell(3,i).getContents()
-					});
-				}
+						                   	   ,HopePanel.s[j].getCell(2,i).getContents(),HopePanel.s[j].getCell(3,i).getContents()
+				});
 			}
-			wb.close();
+			}
+			}
+			//j인덱스의 시트 정보에서 셀이 있는지 없는지를 모두 판단 후 JTable에 정보를 넣는다.
+			workbook.close();
 		} catch (BiffException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

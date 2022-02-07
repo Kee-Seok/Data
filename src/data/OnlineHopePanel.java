@@ -220,7 +220,7 @@ public class OnlineHopePanel extends JPanel implements ActionListener{
 			setPerformanceLabel();
 		}else if(e.getActionCommand()=="저장") {
 			try {
-				save();
+				Excel.save();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -235,7 +235,7 @@ public class OnlineHopePanel extends JPanel implements ActionListener{
 	
 	public static void getDataFromExcel() {
 		try {
-			Workbook wb = Workbook.getWorkbook(file);
+			Workbook wb = Workbook.getWorkbook(Excel.file);
 			
 			for(int i = 0; i < 7; i++) {
 				s[i] = wb.getSheet(i);
