@@ -3,7 +3,6 @@ package data;
 import java.io.File;
 import java.io.IOException;
 
-import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -53,7 +52,7 @@ public class Excel{
 		sheetFont = new WritableFont(WritableFont.ARIAL,12,WritableFont.BOLD,false);
 		format = new WritableCellFormat(sheetFont);
 		format.setAlignment(Alignment.CENTRE);
-		format.setBorder(Border.ALL, BorderLineStyle.THICK,Colour.BROWN);
+		format.setBorder(Border.ALL, BorderLineStyle.THIN,Colour.PALETTE_BLACK);
 	}
 	public static void save() throws Exception {
 			setFormat();
@@ -73,46 +72,66 @@ public class Excel{
 				for(int c = 0; c < HopePanel.model.getColumnCount(); c++)
 					ws[1].addCell(new Label(c,r+1,HopePanel.model.getValueAt(r, c).toString(),format));
 			}
-			int[] cellWidth = {22, 10, 22, 50};
+			for(int c = 0; c < HearimPanel.model.getColumnCount(); c++) {
+				ws[2].addCell(new Label(c,0,HearimPanel.titles[c],format));
+			}
+			for(int r = 0; r < HearimPanel.model.getRowCount(); r++) { 
+				for(int c = 0; c < HearimPanel.model.getColumnCount(); c++) {
+					System.out.println(HearimPanel.model.getValueAt(r, c));
+					ws[2].addCell(new Label(c,r+1,HearimPanel.model.getValueAt(r, c).toString(),format));
+				}
+			}
+			for(int c = 0; c < HealingPanel.model.getColumnCount(); c++) {
+				ws[3].addCell(new Label(c,0,HealingPanel.titles[c],format));
+			}
+			for(int r = 0; r < HealingPanel.model.getRowCount(); r++) { 
+				for(int c = 0; c < HealingPanel.model.getColumnCount(); c++) {
+					System.out.println(HealingPanel.model.getValueAt(r, c));
+					ws[3].addCell(new Label(c,r+1,HealingPanel.model.getValueAt(r, c).toString(),format));
+				}
+			}
+			for(int c = 0; c < JajoPanel.model.getColumnCount(); c++) {
+				ws[4].addCell(new Label(c,0,JajoPanel.titles[c],format));
+			}
+			for(int r = 0; r < JajoPanel.model.getRowCount(); r++) { 
+				for(int c = 0; c < JajoPanel.model.getColumnCount(); c++) {
+					System.out.println(JajoPanel.model.getValueAt(r, c));
+					ws[4].addCell(new Label(c,r+1,JajoPanel.model.getValueAt(r, c).toString(),format));
+				}
+			}
+			for(int c = 0; c < EHopePanel.model.getColumnCount(); c++) {
+				ws[5].addCell(new Label(c,0,EHopePanel.titles[c],format));
+			}
+			for(int r = 0; r < EHopePanel.model.getRowCount(); r++) { 
+				for(int c = 0; c < EHopePanel.model.getColumnCount(); c++) {
+					System.out.println(EHopePanel.model.getValueAt(r, c));
+					ws[5].addCell(new Label(c,r+1,EHopePanel.model.getValueAt(r, c).toString(),format));
+				}
+			}
+			for(int c = 0; c < HopeMessengerPanel.model.getColumnCount(); c++) {
+				ws[6].addCell(new Label(c,0,HopeMessengerPanel.titles[c],format));
+			}
+			for(int r = 0; r < HopeMessengerPanel.model.getRowCount(); r++) { 
+				for(int c = 0; c < HopeMessengerPanel.model.getColumnCount(); c++) {
+					System.out.println(HopeMessengerPanel.model.getValueAt(r, c));
+					ws[6].addCell(new Label(c,r+1,HopeMessengerPanel.model.getValueAt(r, c).toString(),format));
+				}
+			}
+			
+			int[] cellWidth = {27, 10, 22, 80};
 			for(int i = 0; i < 4; i++) {
 				ws[0].setColumnView(i, cellWidth[i]);
 				ws[1].setColumnView(i, cellWidth[i]);
+				ws[2].setColumnView(i, cellWidth[i]);
+				ws[3].setColumnView(i, cellWidth[i]);
+				ws[4].setColumnView(i, cellWidth[i]);
+				ws[5].setColumnView(i, cellWidth[i]);
 			}
 			
 			wb.write();
 			wb.close();
 	}
 	
-	public static void getDataFromExcel1() throws Exception{
-		Workbook workbook = Workbook.getWorkbook(file);
-		Sheet[] sheet = workbook.getSheets();
-		for(int i = 0; i < sheet.length; i++) {
-			for(int r = 0 ; r < sheet[i].getRows(); r++) {
-				for(int c = 0; c < sheet[i].getColumns(); c++) {
-				
-		        Cell[] cell = {sheet[i].getCell(0,r),
-		        		       sheet[i].getCell(1,r),
-		        		       sheet[i].getCell(2,r),
-		        		       sheet[i].getCell(3,r),
-		        };
-		        String[] cellData = {cell[0].getContents(), 
-		        		             cell[1].getContents(), 
-		        		             cell[2].getContents(), 
-		        		             cell[3].getContents() 
-		        };
-		        System.out.println(sheet[i].getName());
-		        System.out.println(sheet[i].getCell(c,r).getContents());
-		        if(i == 0) {
-		        OnlineHopePanel.model.addRow(cellData);
-		        }else if(i == 1) {
-		        HopePanel.model.addRow(cellData);
-		        }
-		                                  
-		        };
-			}
-			}
-		workbook.close();
-		}
 	public static void getDataFromExcel() throws Exception {
 		try {
 			//save();
@@ -134,6 +153,36 @@ public class Excel{
 			}else if(j == 1) {
 			for(int i = 1; i < s[j].getRows(); i++) {
 					HopePanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
+				});
+			}
+			}else if(j == 2){
+			for(int i = 1; i < s[j].getRows(); i++) {
+					HearimPanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
+				});
+			}
+			}else if(j == 3){
+			for(int i = 1; i < s[j].getRows(); i++) {
+					HealingPanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
+				});
+			}
+			}else if(j == 4){
+			for(int i = 1; i < s[j].getRows(); i++) {
+					JajoPanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
+				});
+			}
+			}else if(j == 5){
+			for(int i = 1; i < s[j].getRows(); i++) {
+					EHopePanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
+						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents(),s[j].getCell(4,i).getContents()
+				});
+			}			
+			}else if(j == 6){
+			for(int i = 1; i < s[j].getRows(); i++) {
+					HopeMessengerPanel.model.addRow(new String[] {s[j].getCell(0,i).getContents(),s[j].getCell(1,i).getContents()
 						                   	   ,s[j].getCell(2,i).getContents(),s[j].getCell(3,i).getContents()
 				});
 			}

@@ -13,18 +13,14 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,7 +36,7 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
-public class HopePanel extends JPanel implements ActionListener{
+public class EHopePanel extends JPanel implements ActionListener{
 
 	JPanel firstPanel = new JPanel(); //centerPanel, rightPanel 들어갈 패널  , BorderLayout(10,10)
 	JPanel centerPanel = new JPanel(); //registerPanel, tablePanel 들어갈 패널 BorderLayout(10,10)
@@ -49,34 +45,32 @@ public class HopePanel extends JPanel implements ActionListener{
 	JPanel registerPanel = new JPanel(); //반 이름, 인원, 날짜, 내용 등 넣을꺼임.
 	JPanel tablePanel = new JPanel(); //JTable 들어갈 자리임.
 	JPanel btnPanel = new JPanel(); //등록,삭제,저장,엑셀켜기 버튼 들어갈 자리
-	JLabel[] label = {new JLabel("반 이름 : ",SwingConstants.CENTER),
-			          new JLabel("참가인원 : ",SwingConstants.CENTER),
-			          new JLabel("날짜 : ",SwingConstants.CENTER),
-			          new JLabel("운영일지 : ",SwingConstants.CENTER)};
-	static int sum;
+
 	static JLabel performanceLabel = new JLabel("-",JLabel.CENTER);
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
-	Color color = C.orange;
-	int sheetNum = 1;
-	String groupname = "희망다이어리";
+	Color color = C.skyBlue;
+	int sheetNum = 5;
+	String groupname = "e희망교실";
 	//-------------------------------------------------------------------
 	
-	
-	
-	String[] group = {groupname, "없음"};
-	JComboBox<String> groupName = new JComboBox<String>(group);
-	JSlider slide = new JSlider(0,20);
-	JLabel slideLabel = new JLabel("10명",SwingConstants.CENTER);
 	JButton[] rightBtn = {new JButton("등록"),
 			              new JButton("삭제"),
 			              new JButton("저장"),
 			              new JButton("엑셀")};
 	JTextField dateTf = new JTextField(20);
+	JTextField ansysNum = new JTextField(20); //안시스 등록번호
+	JTextField entranceName = new JTextField(20); //대상자명
+	JTextField phoneNumber = new JTextField(20);
 	static int theNumberOfEntrance; //참가인원 라벨에서 명을 빼고 숫자텍스트만 변수에 넣을꺼임 (그래야 계산하기 수월함)
-	JTextArea ta = new JTextArea();
+	JTextArea ta = new JTextArea();//내용
 	
 	
-	static String[] titles = {"반이름", "참가인원", "날짜", "운영일지"};
+	static String[] titles = {"안시스 등록번호", "대상자명", "전화번호", "완료날짜", "내용"};
+	JLabel[] label = {new JLabel(titles[0]+" : ",SwingConstants.CENTER),
+	          new JLabel(titles[1]+" : ",SwingConstants.CENTER),
+	          new JLabel(titles[2]+" : ",SwingConstants.CENTER),
+	          new JLabel(titles[3]+" : ",SwingConstants.CENTER),
+	          new JLabel(titles[4]+" : ",SwingConstants.CENTER)};
 	static DefaultTableModel model = new DefaultTableModel(titles,0);
 	static JTable table = new JTable(model);
 	JScrollPane scroll = new JScrollPane(table);
@@ -86,35 +80,29 @@ public class HopePanel extends JPanel implements ActionListener{
 	static WritableWorkbook wb;
 	static WritableSheet[] ws = new WritableSheet[7];
 	static Sheet[] s = new Sheet[7];
-	public HopePanel(){
+	public EHopePanel(){
 		setLayout(null);
 		setPanel();
-		setSlider();
 		add(firstPanel);
 		setPerformanceLabel();
 	}
 
 	public static void setPerformanceLabel() {
-		performanceLabel.setText("<html>"+model.getRowCount()+"건"
-                + "<br>"
-                + getPerformanceNumber() +"명"
+		performanceLabel.setText("<html>"+getPerformanceNumber() +"명"
                 		+ "</html>");
-		sum = 0; //참가인원의 ~명에서 글자를 빼고 숫자만 산출 후 더할꺼임. 이 메소드를 실행 후에는 반드시 sum을 =0으로 초기화시켜줘야된다.
 	}
 	public static int getPerformanceNumber() {  //참가인원의 ~명에서 글자를 빼고 숫자만 산출 후 더할꺼임. 이 메소드를 실행 후에는 반드시 sum을 =0으로 초기화시켜줘야된다.
-		for(int r = 0; r < model.getRowCount(); r++) {
-		    theNumberOfEntrance = Integer.parseInt(model.getValueAt(r,1).toString().replace("명", ""));
-			sum += theNumberOfEntrance;
-		}
-		return sum;
+		    theNumberOfEntrance = model.getRowCount();
+		return theNumberOfEntrance;
 	}
 	
 	public void setTable() {
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
 		table.getColumnModel().getColumn(1).setPreferredWidth(100);
-		table.getColumnModel().getColumn(2).setPreferredWidth(200);
-		table.getColumnModel().getColumn(3).setPreferredWidth(450);
+		table.getColumnModel().getColumn(2).setPreferredWidth(150);
+		table.getColumnModel().getColumn(3).setPreferredWidth(150);
+		table.getColumnModel().getColumn(4).setPreferredWidth(350);
 		scroll.setBounds(11,10,970,450);
 		DefaultTableCellRenderer render = new DefaultTableCellRenderer();
 		render.setHorizontalAlignment(SwingConstants.CENTER); //DefaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -141,7 +129,7 @@ public class HopePanel extends JPanel implements ActionListener{
 		rightPanel.setLayout(new GridLayout(2,1));
 		btnPanel.setLayout(new GridLayout(4,1,10,10));
 		btnPanel.setBorder(BorderFactory.createTitledBorder("처리"));
-		registerPanel.setLayout(new GridLayout(4,3,50,10));
+		registerPanel.setLayout(new GridLayout(5,3,50,10));
 		registerPanel.setSize(880,400);
 		registerPanel.setBorder(BorderFactory.createLineBorder(color,5,true));
 //		label[0].setBounds(30,10,100,50); groupName.setBounds(140,10,100,50);
@@ -156,16 +144,19 @@ public class HopePanel extends JPanel implements ActionListener{
 		performanceLabel.setForeground(Color.black);
 		performanceLabel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2),"실적"));
 
-		registerPanel.add(label[0]);
-		registerPanel.add(groupName);
+		registerPanel.add(label[0]); //"안시스 등록번호", "대상자명", "전화번호", "완료날짜", "내용"
+		registerPanel.add(ansysNum);
 		registerPanel.add(new JPanel());
 		registerPanel.add(label[1]);
-		registerPanel.add(slideLabel);
-		registerPanel.add(slide);
+		registerPanel.add(entranceName);
+		registerPanel.add(new JPanel());
 		registerPanel.add(label[2]);
-		registerPanel.add(dateTf);
+		registerPanel.add(phoneNumber);
 		registerPanel.add(new JPanel());
 		registerPanel.add(label[3]);
+		registerPanel.add(dateTf);
+		registerPanel.add(new JPanel());
+		registerPanel.add(label[4]);
 		registerPanel.add(ta);
 		registerPanel.add(performanceLabel);
 		
@@ -182,30 +173,13 @@ public class HopePanel extends JPanel implements ActionListener{
 		firstPanel.add(rightPanel,BorderLayout.EAST);
 	}
 	
-	public void setSlider() {
-		slide.setMajorTickSpacing(5);
-		slide.setMinorTickSpacing(1);
-		slide.setPaintTicks(true);
-		slide.setPaintLabels(true);
-		slideLabel.setBackground(Color.white);
-		slideLabel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-		slide.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				JSlider s = (JSlider)e.getSource();
-				if(!s.getValueIsAdjusting()) {
-					int val = (int)slide.getValue();
-					slideLabel.setText(val+"명");
-			}
-		}
-	});
-	}
-	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand()=="등록") { //JTable에 정보를 등록할때 사용할 버튼이다.
+			//"안시스 등록번호", "대상자명", "전화번호", "완료날짜", "내용"
 			if(model.getRowCount()==0) {
-				model.addRow(new String[] {groupName.getSelectedItem().toString(), slideLabel.getText(), dateTf.getText(), ta.getText()});
+				model.addRow(new String[] {ansysNum.getText(), entranceName.getText(), phoneNumber.getText(),dateTf.getText() , ta.getText()});
 			}else {
-			model.insertRow(table.getSelectedRow()+1,new String[] {groupName.getSelectedItem().toString(), slideLabel.getText(), dateTf.getText(), ta.getText()});
+			model.insertRow(table.getSelectedRow()+1,new String[] {ansysNum.getText(), entranceName.getText(), phoneNumber.getText(),dateTf.getText() , ta.getText()});
 			}
 			table.changeSelection(table.getSelectedRow()+1, 0, false, false);
 			setPerformanceLabel();

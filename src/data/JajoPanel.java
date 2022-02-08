@@ -40,7 +40,7 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
-public class HopePanel extends JPanel implements ActionListener{
+public class JajoPanel extends JPanel implements ActionListener{
 
 	JPanel firstPanel = new JPanel(); //centerPanel, rightPanel 들어갈 패널  , BorderLayout(10,10)
 	JPanel centerPanel = new JPanel(); //registerPanel, tablePanel 들어갈 패널 BorderLayout(10,10)
@@ -56,9 +56,9 @@ public class HopePanel extends JPanel implements ActionListener{
 	static int sum;
 	static JLabel performanceLabel = new JLabel("-",JLabel.CENTER);
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
-	Color color = C.orange;
-	int sheetNum = 1;
-	String groupname = "희망다이어리";
+	Color color = C.green;
+	int sheetNum = 4;
+	String groupname = "자조모임";
 	//-------------------------------------------------------------------
 	
 	
@@ -86,7 +86,7 @@ public class HopePanel extends JPanel implements ActionListener{
 	static WritableWorkbook wb;
 	static WritableSheet[] ws = new WritableSheet[7];
 	static Sheet[] s = new Sheet[7];
-	public HopePanel(){
+	public JajoPanel(){
 		setLayout(null);
 		setPanel();
 		setSlider();

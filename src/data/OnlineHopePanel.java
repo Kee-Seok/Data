@@ -203,20 +203,31 @@ public class OnlineHopePanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand()=="등록") { //JTable에 정보를 등록할때 사용할 버튼이다.
-			model.addRow(new String[] {groupName.getSelectedItem().toString(), slideLabel.getText(), dateTf.getText(), ta.getText()});
-			table.changeSelection(table.getRowCount()-1, 0, false, false);
+			if(model.getRowCount()==0) {
+				model.addRow(new String[] {groupName.getSelectedItem().toString(), slideLabel.getText(), dateTf.getText(), ta.getText()});
+			}else {
+			model.insertRow(table.getSelectedRow()+1,new String[] {groupName.getSelectedItem().toString(), slideLabel.getText(), dateTf.getText(), ta.getText()});
+			}
+			table.changeSelection(table.getSelectedRow()+1, 0, false, false);
 			setPerformanceLabel();
 		}else if(e.getActionCommand()=="삭제") {
-			if(table.getRowCount()<=0) {
+			if(table.getRowCount()<=0) { //JTable에 아무것도 없으면 return한다.
 				return;
 			}
-			table.changeSelection(table.getRowCount()-1, 0, false, false);
-			model.removeRow(table.getSelectedRow());
-			table.changeSelection(table.getRowCount()-1, 0, false, false);
+			if(table.getSelectedRow() < model.getRowCount()-1) {
+				int getSelectedRow = table.getSelectedRow();
+				model.removeRow(table.getSelectedRow());
+				table.changeSelection(getSelectedRow, 0, false, false);
+			}else if(table.getSelectedRow()==model.getRowCount()-1) {
+				int getSelectedRow = table.getSelectedRow();
+				model.removeRow(table.getSelectedRow());
+				table.changeSelection(getSelectedRow-1, 0, false, false);
+			}
 			setPerformanceLabel();
 		}else if(e.getActionCommand()=="저장") {
 			try {
 				Excel.save();
+				setPerformanceLabel();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
