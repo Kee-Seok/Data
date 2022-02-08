@@ -32,7 +32,7 @@ public class Data extends JFrame implements ActionListener{
             .getScaledInstance(100, 50, Image.SCALE_SMOOTH), new Point(0,0), "watermelon");
 
 	
-	Point p = new Point(100,100);
+	Point p = new Point(321,159);
 	int mouseX, mouseY, getPointX, getPointY;
 	
 	JPanel mainScreen = new JPanel(true) { //메인패널 패널
@@ -85,7 +85,7 @@ public class Data extends JFrame implements ActionListener{
 		setLocation(p.x,p.y);
 		setUndecorated(true);
 		setResizable(false);
-		setVisible(true);
+		setVisible(false);
 		
 		setPanels();
 		addKeyListener();
@@ -339,6 +339,7 @@ public class Data extends JFrame implements ActionListener{
 			p.y = e.getLocationOnScreen().y-(getPointY+10);
 			setLocation(p.x,p.y);
 			System.out.println("p.X는 : "+ p.x);
+			System.out.println("p.Y는 : "+ p.y);
 			System.out.println("getLocationOnScreen은 : "+ e.getLocationOnScreen());
 			System.out.println("mouseX1은 : "+mouseX1);
 			System.out.println("mouseY1은 : "+mouseY1);
