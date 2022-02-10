@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -14,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 
 public class LoginPanel extends JPanel{
@@ -84,6 +87,30 @@ public class LoginPanel extends JPanel{
 			}
 		}
 	});
+	Timer timer = new Timer(1,new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(bear.dir==0&&bear.x+bear.img.getWidth(null)<700) {
+			bear.x += 1;
+			repaint();
+				if(bear.x+bear.img.getWidth(null)>=700) {
+					bear.dir = 1;
+					repaint();
+				}
+			}else if(bear.dir==1&&bear.x>0) {
+				bear.x -= 1;
+				repaint();
+				if(bear.x<=0) {
+					bear.dir = 0;
+					repaint();
+				}
+			}
+			System.out.println(bear.x+bear.img.getWidth(null));
+		}
+		
+	});
+	timer.start();
 	}
 	
 	
@@ -93,7 +120,7 @@ public class LoginPanel extends JPanel{
 		g.fillRect(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		
 		g.drawImage(titleImage, 60, 100, null);
-		bear.paintComponent(g);
+		bear.paintComponent(g); 
 	}
 
 	}

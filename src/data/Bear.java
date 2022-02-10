@@ -19,10 +19,10 @@ public class Bear extends Thread{
 			while(true) {
 				try {
 					Thread.sleep(1000);
+					x+=20;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				move();
 			}
 		}
 		
