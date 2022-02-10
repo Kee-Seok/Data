@@ -148,14 +148,20 @@ public class JajoPanel extends JPanel implements ActionListener{
 //		label[1].setBounds(30,120,100,50); slide.setBounds(140,120,100,50); slideLabel.setBounds(200,120,50,50);
 		tablePanel.setLayout(null);
 		tablePanel.setBorder(BorderFactory.createLineBorder(color,5,true));
-		
 		ta.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		ta.setLineWrap(true);
 		dateTf.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		dateTf.setHorizontalAlignment(JTextField.CENTER);
 		dateTf.setText(Date.getDate());
 		performanceLabel.setFont(new Font("Serif",Font.BOLD,20));
 		performanceLabel.setForeground(Color.black);
 		performanceLabel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2),"실적"));
 
+		dateTf.setHorizontalAlignment(JTextField.CENTER);
+		ta.setToolTipText("운영 내용을 입력하세요.");
+		ta.setLineWrap(true);
+		ta.setWrapStyleWord(true);
+		
 		registerPanel.add(label[0]);
 		registerPanel.add(groupName);
 		registerPanel.add(new JPanel());

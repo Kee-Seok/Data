@@ -328,31 +328,16 @@ public class Data extends JFrame implements ActionListener{
 			getPointX = e.getPoint().x+10;
 			getPointY = e.getPoint().y+10;
 			p = new Point(e.getLocationOnScreen().x-e.getPoint().x-10,e.getLocationOnScreen().y-e.getPoint().y-10);
-			System.out.println("getPointX는 : "+getPointX);
-			System.out.println("getPointY는 : "+getPointY);
 		}
 		public void mouseDragged(MouseEvent e) {
 			
-			int mouseX1 = e.getLocationOnScreen().x-mouseX;
-			int mouseY1 = e.getLocationOnScreen().y-mouseY;
 			p.x = e.getLocationOnScreen().x-(getPointX+10);
 			p.y = e.getLocationOnScreen().y-(getPointY+10);
 			setLocation(p.x,p.y);
-			System.out.println("p.X는 : "+ p.x);
-			System.out.println("p.Y는 : "+ p.y);
-			System.out.println("getLocationOnScreen은 : "+ e.getLocationOnScreen());
-			System.out.println("mouseX1은 : "+mouseX1);
-			System.out.println("mouseY1은 : "+mouseY1);
 		}
 		public void mouseReleased(MouseEvent e) {
-//			Point p1 = new Point(e.getLocationOnScreen().x-mouseX,e.getLocationOnScreen().y-mouseY);
-//			p = new Point(e.getLocationOnScreen().x-e.getPoint().x-10+p1.x,e.getLocationOnScreen().y-e.getPoint().y-10+p1.y);
-//			setLocation(p.x,p.y);
-//			System.out.println(p.x);
-//			System.out.println(p.y);
 		}
 		public void mouseMoved(MouseEvent e) {
-			
 		}
 		public void mouseClicked(MouseEvent e) {
 			JPanel panel =(JPanel)e.getSource();

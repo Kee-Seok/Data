@@ -62,7 +62,7 @@ public class EHopePanel extends JPanel implements ActionListener{
 	JTextField entranceName = new JTextField(20); //대상자명
 	JTextField phoneNumber = new JTextField(20);
 	static int theNumberOfEntrance; //참가인원 라벨에서 명을 빼고 숫자텍스트만 변수에 넣을꺼임 (그래야 계산하기 수월함)
-	JTextArea ta = new JTextArea();//내용
+	JTextArea ta = new JTextArea(3,10);//내용
 	
 	
 	static String[] titles = {"안시스 등록번호", "대상자명", "전화번호", "완료날짜", "내용"};
@@ -138,12 +138,26 @@ public class EHopePanel extends JPanel implements ActionListener{
 		tablePanel.setBorder(BorderFactory.createLineBorder(color,5,true));
 		
 		ta.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		ta.setLineWrap(true);
+		ta.setToolTipText("운영 내용을 입력하세요.");
+		ta.setWrapStyleWord(true);
+		
 		dateTf.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		dateTf.setText(Date.getDate());
 		performanceLabel.setFont(new Font("Serif",Font.BOLD,20));
 		performanceLabel.setForeground(Color.black);
 		performanceLabel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2),"실적"));
-
+		ansysNum.setText("-p");
+		ansysNum.setHorizontalAlignment(JTextField.CENTER);
+		
+		ansysNum.setToolTipText("안시스 등록번호를 입력하세요.");
+		entranceName.setToolTipText("참여 대상자 이름을 입력하세요.");
+		phoneNumber.setToolTipText("참여 전화번호를 입력하세요.");
+		dateTf.setToolTipText("프로그램 진행 날짜를 입력하세요.");
+		
+		entranceName.setHorizontalAlignment(JTextField.CENTER);
+		dateTf.setHorizontalAlignment(JTextField.CENTER);
+		phoneNumber.setHorizontalAlignment(JTextField.CENTER);
 		registerPanel.add(label[0]); //"안시스 등록번호", "대상자명", "전화번호", "완료날짜", "내용"
 		registerPanel.add(ansysNum);
 		registerPanel.add(new JPanel());
@@ -177,12 +191,20 @@ public class EHopePanel extends JPanel implements ActionListener{
 		if(e.getActionCommand()=="등록") { //JTable에 정보를 등록할때 사용할 버튼이다.
 			//"안시스 등록번호", "대상자명", "전화번호", "완료날짜", "내용"
 			if(model.getRowCount()==0) {
-				model.addRow(new String[] {ansysNum.getText(), entranceName.getText(), phoneNumber.getText(),dateTf.getText() , ta.getText()});
+				model.addRow(new String[] {ansysNum.getText(), entranceName.getText(), 
+						                  phoneNumber.getText().substring(0,3)+"-"+phoneNumber.getText().substring(3,7)
+						                  +"-"+phoneNumber.getText().substring(7),dateTf.getText() , ta.getText()});
+			
 			}else {
-			model.insertRow(table.getSelectedRow()+1,new String[] {ansysNum.getText(), entranceName.getText(), phoneNumber.getText(),dateTf.getText() , ta.getText()});
+			model.insertRow(table.getSelectedRow()+1,new String[] {ansysNum.getText(), entranceName.getText(), 
+					                      phoneNumber.getText().substring(0,3)+"-"+phoneNumber.getText().substring(3,7)
+	                                      +"-"+phoneNumber.getText().substring(7),dateTf.getText() , ta.getText()});
 			}
 			table.changeSelection(table.getSelectedRow()+1, 0, false, false);
 			setPerformanceLabel();
+			ansysNum.setText("-p");
+			entranceName.setText("");
+			phoneNumber.setText("");
 		}else if(e.getActionCommand()=="삭제") {
 			if(table.getRowCount()<=0) { //JTable에 아무것도 없으면 return한다.
 				return;

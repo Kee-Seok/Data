@@ -150,6 +150,11 @@ public class HearimPanel extends JPanel implements ActionListener{
 		tablePanel.setLayout(null);
 		tablePanel.setBorder(BorderFactory.createLineBorder(color,5,true));
 		
+		dateTf.setHorizontalAlignment(JTextField.CENTER);
+		ta.setToolTipText("운영 내용을 입력하세요.");
+		ta.setLineWrap(true);
+		ta.setWrapStyleWord(true);
+		
 		ta.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		dateTf.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		dateTf.setText(Date.getDate());
