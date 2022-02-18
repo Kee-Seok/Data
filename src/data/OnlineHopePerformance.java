@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,7 +22,6 @@ public class OnlineHopePerformance extends JPanel{
 	//-----------------------------------------------------------------------------------
 	static JLabel title = new JLabel(groupName+" 실적",JLabel.CENTER);
 	static Font font = new Font("Serif",Font.BOLD,30);
-	static JButton backBtn = new JButton("뒤로");
 	static JLabel totalPerformance = new JLabel("총 실적",SwingConstants.CENTER); 
 	static String[] contents = {"그룹","건","명"};
 	static JLabel[] label = {new JLabel("1월",SwingConstants.CENTER), //1월~12월 실적 표시 라벨
@@ -88,14 +86,8 @@ public class OnlineHopePerformance extends JPanel{
 		setLayout(null);
 		titlePanel = new JPanel();
 		performancePanel = new JPanel();
-		backBtnPanel = new JPanel();
-		backBtn.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-		backBtn.setBackground(color);
-		backBtn.setFont(font);
-		backBtnPanel.add(backBtn);
-		backBtnPanel.setBounds(920,350,160,250);
-		titlePanel.setBounds(0,0,1080,100);
-		performancePanel.setBounds(0,100,1080,700);
+		titlePanel.setBounds(0,30,1080,50);
+		performancePanel.setBounds(0,30,1080,700);
 		titlePanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		title.setFont(font);
 		titlePanel.add(title);
@@ -104,9 +96,9 @@ public class OnlineHopePerformance extends JPanel{
 		performancePanel.setLayout(null);
 		for(int r = 0; r < 2; r++) {
 			for(int c = 0; c < 6; c++) {
-				label[i].setBounds(20+150*c,50+250*r,150,50);
+				label[i].setBounds(10+177*c,50+200*r,170,50);
 				label[i].setFont(font);
-				scroll[i].setBounds(20+150*c,100+250*r,150,200);
+				scroll[i].setBounds(10+177*c,100+200*r,170,150);
 				scroll[i].setBorder(BorderFactory.createLineBorder(color,1));
 				scroll[i].setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 				performancePanel.add(label[i]);
@@ -114,17 +106,17 @@ public class OnlineHopePerformance extends JPanel{
 				for(int j = 0; j < contents.length; j++) {
 				model[i].addColumn(contents[j]);
 				}
+				
+				
 				i++;
 			}
 		}
-		performancePanel.add(backBtnPanel);
 		add(titlePanel);
 		add(performancePanel);
 		}
 	
-	public static void setPerformanceTable(JLabel monthLabel,DefaultTableModel model,DefaultTableModel getDataFromOtherTable,
+	public static void setPerformanceTable(DefaultTableModel model,DefaultTableModel getDataFromOtherTable,
 										   ArrayList<String> group) {
-		monthLabel.setFont(new Font("Serif",Font.BOLD,20));
 		PM.setPerformance(getDataFromOtherTable); //월별 실적 클래스에서 계산된 데이터 가져오기.
 		int groupSize[] = new int[group.size()];
 		for(int i = 0; i < group.size(); i++) {
