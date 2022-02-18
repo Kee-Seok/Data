@@ -69,6 +69,7 @@ public class MyFrame extends JFrame implements ActionListener{
 		loginPanel.setVisible(false);
 		setVisible(false);
 		dataPanel.setVisible(true);
+		LoginPanel.timer.stop();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -77,19 +78,6 @@ public class MyFrame extends JFrame implements ActionListener{
 			isCorrectId();
 		}else if(button == "안시스") {
 			Event.openAnsys();
-//			try {
-//			Thread.sleep(3000);
-//			}catch(Exception ex) {
-//				ex.printStackTrace();
-//			}
-//			Event.mousePress(670, 430, 4000);//로그인 버튼
-//			Event.mousePress(187, 510, 1000);//비밀번호필드 버튼
-//			Event.startKeyMacro("mxl1020!");//비밀번호 치기
-//			Event.mousePress(187, 510, 1000);//확인버튼 버튼
-//			Event.mousePress(954, 504, 1000);//들어가기 버튼
-//			Event.mousePress(22, 525, 1000);//치매가족 탭
-//			Event.mousePress(134, 429, 1000);//치매가족교실 운영현황 버튼
-			
 		}
 	}
 	
@@ -102,6 +90,7 @@ public class MyFrame extends JFrame implements ActionListener{
 		System.out.println(password);
 		if(LoginPanel.idTf.getText().equals(LoginPanel.id)&&password.equals(realPassword)) {
 			goDataPanel();
+			LoginPanel.isTimer = false;
 		}else {
 			JOptionPane op = new JOptionPane();
 			LoginPanel.pwTf.setText("");

@@ -66,15 +66,16 @@ public class Data extends JFrame implements ActionListener{
 			this.repaint();
 		}
 	};
-	OnlineHopePanel onlineHopePanel = new OnlineHopePanel();
-	HopePanel hopePanel = new HopePanel();
-	HearimPanel hearimPanel = new HearimPanel();
-	HealingPanel healingPanel = new HealingPanel();
-	JajoPanel jajoPanel = new JajoPanel();
-	EHopePanel eHopePanel = new EHopePanel();
-	HopeMessengerPanel hopeMessengerPanel = new HopeMessengerPanel();
+	static OnlineHopePanel onlineHopePanel = new OnlineHopePanel();
+	static HopePanel hopePanel = new HopePanel();
+	static HearimPanel hearimPanel = new HearimPanel();
+	static HealingPanel healingPanel = new HealingPanel();
+	static JajoPanel jajoPanel = new JajoPanel();
+	static EHopePanel eHopePanel = new EHopePanel();
+	static HopeMessengerPanel hopeMessengerPanel = new HopeMessengerPanel();
+	static Performance performancePanel = new Performance();
 	JButton[] mainBtn = {new JButton("온라인 희망다이어리"), new JButton("희망다이어리"), new JButton("헤아림"),  new JButton("힐링프로그램"), 
-			         new JButton("자조모임"), new JButton("e희망교실"), new JButton("희망메신저"), new JButton("데이터")};
+			         new JButton("자조모임"), new JButton("e희망교실"), new JButton("희망메신저"), new JButton("실적")};
 	JButton[] onlineBtn = {new JButton("등록"), new JButton("삭제"), new JButton("저장"), 
 			               new JButton("엑셀켜기")}; 
 	
@@ -114,6 +115,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	
 	public void goOnlineHopePanel() {
@@ -125,6 +127,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	
 	public void goHopePanel() {
@@ -136,6 +139,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	
 	public void goHearimPanel() {
@@ -147,6 +151,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	public void goHealingPanel() {
 		mainScreen.setVisible(false);
@@ -157,6 +162,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	public void goJajoPanel() {
 		mainScreen.setVisible(false);
@@ -167,6 +173,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(true);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	public void goEHopePanel() {
 		mainScreen.setVisible(false);
@@ -177,6 +184,7 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(true);
 		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(false);
 	}
 	public void goHopeMessengerPanel() {
 		mainScreen.setVisible(false);
@@ -187,6 +195,18 @@ public class Data extends JFrame implements ActionListener{
 		jajoPanel.setVisible(false);
 		eHopePanel.setVisible(false);
 		hopeMessengerPanel.setVisible(true);
+		performancePanel.setVisible(false);
+	}
+	public void goPerformancePanel() {
+		mainScreen.setVisible(false);
+		onlineHopePanel.setVisible(false);
+		hopePanel.setVisible(false);
+		hearimPanel.setVisible(false);
+		healingPanel.setVisible(false);
+		jajoPanel.setVisible(false);
+		eHopePanel.setVisible(false);
+		hopeMessengerPanel.setVisible(false);
+		performancePanel.setVisible(true);
 	}
 	
 	public void setBtns() {
@@ -203,18 +223,24 @@ public class Data extends JFrame implements ActionListener{
 			goOnlineHopePanel();
 			OnlineHopePanel.setPerformanceLabel();
 			OnlineHopePanel.table.changeSelection(OnlineHopePanel.table.getRowCount()-1, 0, false, false); //rowcount는 만약에 4줄이면 4를 반환하는데 실제 row 인덱스는 3이라서 -1해줘야됨.
+			PM.setPerformance(onlineHopePanel.model);
 		}else if(str == "희망다이어리") {
 			goHopePanel();
-			hopePanel.setPerformanceLabel();
+			HopePanel.setPerformanceLabel();
 			HopePanel.table.changeSelection(HopePanel.table.getRowCount()-1, 0, false, false); //rowcount는 만약에 4줄이면 4를 반환하는데 실제 row 인덱스는 3이라서 -1해줘야됨.
+			PM.setPerformance(hopePanel.model);
 		}else if(str == "헤아림") {
 			goHearimPanel();
 			HearimPanel.setPerformanceLabel();
 			HearimPanel.table.changeSelection(HearimPanel.table.getRowCount()-1, 0, false, false); //rowcount는 만약에 4줄이면 4를 반환하는데 실제 row 인덱스는 3이라서 -1해줘야됨.
 		}else if(str == "힐링프로그램") {
 			goHealingPanel();
+			
+			HealingPanel.getGroupName();//반 이름 몇개나오는지
+			
 			HealingPanel.setPerformanceLabel();
 			HealingPanel.table.changeSelection(HealingPanel.table.getRowCount()-1, 0, false, false); //rowcount는 만약에 4줄이면 4를 반환하는데 실제 row 인덱스는 3이라서 -1해줘야됨.
+			PM.setPerformance(healingPanel.model);
 		}else if(str == "자조모임") {
 			goJajoPanel();
 			JajoPanel.setPerformanceLabel();
@@ -227,13 +253,18 @@ public class Data extends JFrame implements ActionListener{
 			goHopeMessengerPanel();
 			HopeMessengerPanel.setPerformanceLabel();
 			HopeMessengerPanel.table.changeSelection(HopeMessengerPanel.table.getRowCount()-1, 0, false, false); //rowcount는 만약에 4줄이면 4를 반환하는데 실제 row 인덱스는 3이라서 -1해줘야됨.
+		}else if(str == "실적") {
+			goPerformancePanel();
+			performancePanel.init();
+			//Performance.setPerformanceLabel();
+			//Performance.table.changeSelection(Performance.table.getRowCount()-1, 0, false, false); //rowcount는 만약에 4줄이면 4를 반환하는데 실제 row 인덱스는 3이라서 -1해줘야됨.
 		}
 		requestFocus();
 	}
 	
 	public void setPanels() { //패널 크기 위치 세팅
 		setBtns();
-		emptyPanel.setBounds(10,10,180,196);
+		emptyPanel.setBounds(10,10,180,186);
 		emptyPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, new Color(44,27,1), new Color(153,102,0)));
 
 		emptyPanel.addMouseMotionListener(new PanelMouseListener());
@@ -254,14 +285,16 @@ public class Data extends JFrame implements ActionListener{
 		eHopePanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		hopeMessengerPanel.setBounds(200,0,1080,720);
 		hopeMessengerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		performancePanel.setBounds(200,0,1080,720);
+		performancePanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		leftBtnPanel.setBounds(0,0,200,720);
 		leftBtnPanel.setLayout(null);
 		leftBtnPanel.setBorder(BorderFactory.createLineBorder(new Color(255,200,140),4,true));
 		
 		for(int i = 0; i < mainBtn.length; i++) {
-			mainBtn[i].setBounds(10,216+72*i,180,62);
+			mainBtn[i].setBounds(10,203+64*i,180,58);
 		}
-		//leftBtnPanel에 버튼들 추가
+		//leftBtnPanel에 버튼들 추가신기석신깃
 		for(int i = 0; i < 3; i++) {
 		leftBtnPanel.add(emptyPanel);
 		}
@@ -277,6 +310,7 @@ public class Data extends JFrame implements ActionListener{
 		add(jajoPanel);
 		add(eHopePanel);
 		add(hopeMessengerPanel);
+		add(performancePanel);
 		mainScreen.setFocusable(true);
 	}
 	public void addKeyListener() {
@@ -306,6 +340,7 @@ public class Data extends JFrame implements ActionListener{
 			if(str == "자조모임")setCursor(cursor);
 			if(str == "e희망교실")setCursor(cursor);
 			if(str == "희망메신저")setCursor(cursor);
+			if(str == "실적")setCursor(cursor);
 		}
 		public void mouseExited(MouseEvent e) {
 			setCursor(new Cursor(DEFAULT_CURSOR));

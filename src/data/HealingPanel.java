@@ -8,8 +8,14 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -42,6 +48,8 @@ import jxl.write.WritableWorkbook;
 
 public class HealingPanel extends JPanel implements ActionListener{
 
+	
+	
 	JPanel firstPanel = new JPanel(); //centerPanel, rightPanel 들어갈 패널  , BorderLayout(10,10)
 	JPanel centerPanel = new JPanel(); //registerPanel, tablePanel 들어갈 패널 BorderLayout(10,10)
 	JPanel rightPanel = new JPanel(); //dataPanel과 btnPanel 들어갈 자리 GridLayout(2,1);
@@ -58,12 +66,12 @@ public class HealingPanel extends JPanel implements ActionListener{
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
 	Color color = C.lightGreen;
 	int sheetNum = 3;
-	String groupname = "힐링프로그램";
+	static String groupname = "힐링프로그램";
 	//-------------------------------------------------------------------
 	
 	
 	
-	String[] group = {groupname, "없음"};
+	String[] group = {groupname,"힐링프로그램(마음다함)", "힐링프로그램(기억e음)"};
 	JComboBox<String> groupName = new JComboBox<String>(group);
 	JSlider slide = new JSlider(0,20);
 	JLabel slideLabel = new JLabel("10명",SwingConstants.CENTER);
@@ -72,6 +80,9 @@ public class HealingPanel extends JPanel implements ActionListener{
 			              new JButton("저장"),
 			              new JButton("엑셀")};
 	JTextField dateTf = new JTextField(20);
+	JTextField modifyComboBoxTf = new JTextField(20);
+	JButton removeItemBtn = new JButton("제거");
+	
 	static int theNumberOfEntrance; //참가인원 라벨에서 명을 빼고 숫자텍스트만 변수에 넣을꺼임 (그래야 계산하기 수월함)
 	JTextArea ta = new JTextArea();
 	
@@ -93,8 +104,27 @@ public class HealingPanel extends JPanel implements ActionListener{
 		setSlider();
 		add(firstPanel);
 		setPerformanceLabel();
+		modifyComboBox();
 	}
 
+	static ArrayList<String> groupNames = new ArrayList<String>();
+	static Set<String> set = new TreeSet<String>();
+	public static void getGroupName() { //진짜 Iterator에다가 담은 다음에 while문으로 담아야됨;; 어휴
+		groupNames.removeAll(groupNames);
+		for(int i = 0; i < model.getRowCount(); i++) {
+			groupNames.add(model.getValueAt(i, 0).toString());
+		}
+		for(String item : groupNames) {
+			set.add(item);
+		}
+		Iterator<String> iter = set.iterator();
+		groupNames.removeAll(groupNames);
+		while(iter.hasNext()) {
+			groupNames.add(iter.next());
+		}
+		System.out.println(groupNames);
+	}
+	
 	public static void setPerformanceLabel() {
 		performanceLabel.setText("<html>"+model.getRowCount()+"건"
                 + "<br>"
@@ -124,6 +154,26 @@ public class HealingPanel extends JPanel implements ActionListener{
 		}
 	}
 	
+	public void modifyComboBox() {
+		groupName.setToolTipText("반 이름을 고르세요");
+		groupName.setAlignmentY(CENTER_ALIGNMENT);
+		
+		modifyComboBoxTf.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					groupName.addItem(modifyComboBoxTf.getText());
+					modifyComboBoxTf.setText("");
+				}
+			}
+		});
+		removeItemBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				groupName.removeItemAt(groupName.getSelectedIndex());
+			}
+			
+		});
+	}
+	
 	public void setBtn() {
 		for(int i = 0; i < rightBtn.length; i++) {
 		rightBtn[i].setFont(new Font("Serif",Font.BOLD,15));
@@ -151,6 +201,7 @@ public class HealingPanel extends JPanel implements ActionListener{
 		tablePanel.setBorder(BorderFactory.createLineBorder(color,5,true));
 		
 		dateTf.setHorizontalAlignment(JTextField.CENTER);
+		modifyComboBoxTf.setHorizontalAlignment(JTextField.CENTER);
 		ta.setToolTipText("운영 내용을 입력하세요.");
 		ta.setLineWrap(true);
 		ta.setWrapStyleWord(true);
@@ -158,13 +209,24 @@ public class HealingPanel extends JPanel implements ActionListener{
 		ta.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		dateTf.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		dateTf.setText(Date.getDate());
+		
+		JPanel modifyComboBoxPanel = new JPanel();
+		modifyComboBoxPanel.setLayout(new BorderLayout());
+		
+		removeItemBtn.setBorder(BorderFactory.createCompoundBorder());
+		removeItemBtn.setBackground(color);
+		
+		modifyComboBoxTf.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		modifyComboBoxPanel.add(modifyComboBoxTf,BorderLayout.CENTER);
+		modifyComboBoxPanel.add(removeItemBtn,BorderLayout.EAST);
+		
 		performanceLabel.setFont(new Font("Serif",Font.BOLD,20));
 		performanceLabel.setForeground(Color.black);
 		performanceLabel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2),"실적"));
 
 		registerPanel.add(label[0]);
 		registerPanel.add(groupName);
-		registerPanel.add(new JPanel());
+		registerPanel.add(modifyComboBoxPanel);
 		registerPanel.add(label[1]);
 		registerPanel.add(slideLabel);
 		registerPanel.add(slide);

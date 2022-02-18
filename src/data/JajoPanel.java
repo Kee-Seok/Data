@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -58,7 +62,7 @@ public class JajoPanel extends JPanel implements ActionListener{
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
 	Color color = C.green;
 	int sheetNum = 4;
-	String groupname = "자조모임";
+	static String groupname = "자조모임";
 	//-------------------------------------------------------------------
 	
 	
@@ -94,6 +98,24 @@ public class JajoPanel extends JPanel implements ActionListener{
 		setPerformanceLabel();
 	}
 
+	static ArrayList<String> groupNames = new ArrayList<String>();
+	static Set<String> set = new TreeSet<String>();
+	public static void getGroupName() { //진짜 Iterator에다가 담은 다음에 while문으로 담아야됨;; 어휴
+		groupNames.removeAll(groupNames);
+		for(int i = 0; i < model.getRowCount(); i++) {
+			groupNames.add(model.getValueAt(i, 0).toString());
+		}
+		for(String item : groupNames) {
+			set.add(item);
+		}
+		Iterator<String> iter = set.iterator();
+		groupNames.removeAll(groupNames);
+		while(iter.hasNext()) {
+			groupNames.add(iter.next());
+		}
+		System.out.println(groupNames);
+	}
+	
 	public static void setPerformanceLabel() {
 		performanceLabel.setText("<html>"+model.getRowCount()+"건"
                 + "<br>"

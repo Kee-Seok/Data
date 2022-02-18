@@ -58,7 +58,7 @@ public class HopeMessengerPanel extends JPanel implements ActionListener{
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
 	Color color = C.blue;
 	int sheetNum = 6;
-	String groupname = "희망메신저";
+	static String groupname = "희망메신저";
 	//-------------------------------------------------------------------
 	
 	

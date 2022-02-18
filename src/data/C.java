@@ -12,6 +12,7 @@ public class C{
 	public static Color skyBlue = new Color(178,235,244);
 	public static Color blue = new Color(178,204,255);
 	public static Color violet = new Color(209,178,255);
+	public static Color violet2 = new Color(102,0,153);
 	
 	public static Color[] col= {red,orange,yellow,lightGreen,green,skyBlue,blue,violet};
 	

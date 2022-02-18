@@ -20,7 +20,7 @@ import javax.swing.Timer;
 
 
 public class LoginPanel extends JPanel{
-
+	static Timer timer;
 	static Image titleImage = new ImageIcon("./temp/title.png").getImage();
 	static Image loginImage = new ImageIcon("./temp/login.png").getImage();
 	static JPanel loginAreaPanel = new JPanel(true) {
@@ -44,6 +44,7 @@ public class LoginPanel extends JPanel{
 	static String password = "1";
 	
 	static Bear bear = new Bear();
+	static boolean isTimer = true;
 	
 	public LoginPanel() {
 	setLayout(null);
@@ -87,7 +88,7 @@ public class LoginPanel extends JPanel{
 			}
 		}
 	});
-	Timer timer = new Timer(1,new ActionListener() {
+	timer = new Timer(1,new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -106,11 +107,14 @@ public class LoginPanel extends JPanel{
 					repaint();
 				}
 			}
-			System.out.println(bear.x+bear.img.getWidth(null));
 		}
 		
 	});
+	if(isTimer) {
 	timer.start();
+	}else if(!isTimer) {
+		timer.stop();
+	}
 	}
 	
 	

@@ -50,7 +50,7 @@ public class EHopePanel extends JPanel implements ActionListener{
 	//온라인 희망다이어리의 모든 컬러, 시트번호, JComboBox 네이밍 등 한꺼번에 바뀌어야 될 것들
 	Color color = C.skyBlue;
 	int sheetNum = 5;
-	String groupname = "e희망교실";
+	static String groupname = "e희망교실";
 	//-------------------------------------------------------------------
 	
 	JButton[] rightBtn = {new JButton("등록"),
@@ -87,6 +87,8 @@ public class EHopePanel extends JPanel implements ActionListener{
 		setPerformanceLabel();
 	}
 
+	
+	
 	public static void setPerformanceLabel() {
 		performanceLabel.setText("<html>"+getPerformanceNumber() +"명"
                 		+ "</html>");
